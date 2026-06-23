@@ -1,1 +1,2 @@
-/download    /.netlify/functions/download    302
+/app         /.netlify/functions/app-redirect    302
+/download    /.netlify/functions/download        302
