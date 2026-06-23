@@ -12,3 +12,15 @@
   to = "/.netlify/functions/download"
   status = 302
   force = true
+
+[[redirects]]
+  from = "/app-redirect.php"
+  to = "/.netlify/functions/download"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/download-app"
+  to = "/.netlify/functions/download"
+  status = 302
+  force = true

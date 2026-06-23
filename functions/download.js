@@ -1,6 +1,6 @@
 exports.handler = async (event) => {
   const userAgent = event.headers['user-agent'] || '';
-  const host = event.headers.host || 'client-ist.netlify.app';
+  const host = event.headers.host || 'clientist-app.netlify.app';
   const protocol = event.headers['x-forwarded-proto'] || 'https';
   const siteOrigin = `${protocol}://${host}`;
 
