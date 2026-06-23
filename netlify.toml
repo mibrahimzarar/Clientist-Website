@@ -2,7 +2,7 @@
   functions = "functions"
 
 [[redirects]]
-  from = "/app"
-  to = "/.netlify/functions/app-redirect"
+  from = "/download"
+  to = "/.netlify/functions/download"
   status = 302
   force = true

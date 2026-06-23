@@ -1,54 +1,41 @@
-exports.handler = async (event, context) => {
-  // Get user agent from headers
+exports.handler = async (event) => {
   const userAgent = event.headers['user-agent'] || '';
-  
-  // Configuration
+  const host = event.headers.host || 'client-ist.netlify.app';
+  const protocol = event.headers['x-forwarded-proto'] || 'https';
+  const siteOrigin = `${protocol}://${host}`;
+
   const config = {
     android_app_id: 'com.clientist.app',
     ios_app_id: '6758582501',
-    website_url: 'https://client-ist.netlify.app',
-    fallback_url: 'https://client-ist.netlify.app/index.html'
+    download_page: `${siteOrigin}/download.html`,
   };
-  
+
   let redirectUrl;
-  
+
   try {
-    // Check for Android devices
     if (userAgent.toLowerCase().includes('android')) {
       redirectUrl = `https://play.google.com/store/apps/details?id=${config.android_app_id}&pli=1`;
-    }
-    // Check for iOS devices (iPhone, iPad, iPod)
-    else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+    } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
       redirectUrl = `https://apps.apple.com/us/app/clientist/id${config.ios_app_id}`;
+    } else {
+      redirectUrl = config.download_page;
     }
-    // Check for other mobile devices
-    else if (/Mobile|Tablet|BlackBerry|Opera Mini/i.test(userAgent)) {
-      redirectUrl = config.website_url;
-    }
-    // Desktop and other devices
-    else {
-      redirectUrl = config.website_url;
-    }
-    
-    // Return redirect response
+
     return {
       statusCode: 302,
       headers: {
-        'Location': redirectUrl,
-        'Cache-Control': 'no-cache'
+        Location: redirectUrl,
+        'Cache-Control': 'no-cache',
       },
-      body: ''
+      body: '',
     };
-    
   } catch (error) {
-    // Fallback response with manual links
-    const fallbackHtml = `
-<!DOCTYPE html>
+    const fallbackHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clientist - App Redirect</title>
+    <title>Download Clientist</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -86,11 +73,6 @@ exports.handler = async (event, context) => {
             text-decoration: none;
             border-radius: 12px;
             font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
     </style>
 </head>
@@ -99,27 +81,21 @@ exports.handler = async (event, context) => {
         <h1>Clientist</h1>
         <p>Choose your platform to download the app:</p>
         <div class="buttons">
-            <a href="https://play.google.com/store/apps/details?id=${config.android_app_id}&pli=1" class="btn">
-                📱 Android App
-            </a>
-            <a href="https://apps.apple.com/us/app/clientist/id${config.ios_app_id}" class="btn">
-                🍎 iOS App
-            </a>
-            <a href="${config.website_url}" class="btn">
-                🌐 Website
-            </a>
+            <a href="https://play.google.com/store/apps/details?id=${config.android_app_id}&pli=1" class="btn">Android App</a>
+            <a href="https://apps.apple.com/us/app/clientist/id${config.ios_app_id}" class="btn">iOS App</a>
+            <a href="${config.download_page}" class="btn">Download Page</a>
         </div>
     </div>
 </body>
 </html>`;
-    
+
     return {
       statusCode: 200,
       headers: {
         'Content-Type': 'text/html',
-        'Cache-Control': 'no-cache'
+        'Cache-Control': 'no-cache',
       },
-      body: fallbackHtml
+      body: fallbackHtml,
     };
   }
 };
