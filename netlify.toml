@@ -2,25 +2,7 @@
   functions = "functions"
 
 [[redirects]]
-  from = "/app"
-  to = "/.netlify/functions/app-redirect"
-  status = 302
-  force = true
-
-[[redirects]]
   from = "/download"
-  to = "/.netlify/functions/download"
-  status = 302
-  force = true
-
-[[redirects]]
-  from = "/app-redirect.php"
-  to = "/.netlify/functions/download"
-  status = 302
-  force = true
-
-[[redirects]]
-  from = "/download-app"
   to = "/.netlify/functions/download"
   status = 302
   force = true

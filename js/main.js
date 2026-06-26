@@ -192,31 +192,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // UNIVERSAL DOWNLOAD BUTTON
     // ============================================
 
-    const APP_STORE_URL = 'https://apps.apple.com/us/app/clientist/id6758582501';
-    const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.clientist.app&pli=1';
+    const DOWNLOAD_URL = '/download';
 
-    function getStoreUrl() {
-        const ua = navigator.userAgent;
-        if (/android/i.test(ua)) return PLAY_STORE_URL;
-        if (/iPhone|iPad|iPod/i.test(ua)) return APP_STORE_URL;
-        return null;
-    }
-
-    document.querySelectorAll('.btn-universal').forEach(btn => {
-        btn.addEventListener('click', function (e) {
-            const storeUrl = getStoreUrl();
-            if (storeUrl) {
-                e.preventDefault();
-                window.location.href = storeUrl;
-                return;
-            }
-
-            const storeSection = document.getElementById('store-links');
-            if (storeSection) {
-                e.preventDefault();
-                storeSection.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
+    document.querySelectorAll('.btn-universal, .store-badge').forEach(btn => {
+        if (btn.getAttribute('href') === '#') {
+            btn.setAttribute('href', DOWNLOAD_URL);
+        }
     });
 
     // ============================================
